@@ -60,3 +60,13 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+
+# Xcode build /
+DerivedData/
+build/
+
+# macOS
+.DS_Store
+
+# Secrets
+Secrets.xcconfig
