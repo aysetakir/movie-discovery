@@ -2,9 +2,9 @@ import SwiftUI
 
 struct CachedAsyncImage: View {
     let url: URL?
-
+    
     @State private var image: UIImage?
-
+    
     var body: some View {
         Group {
             if let image {
@@ -18,10 +18,10 @@ struct CachedAsyncImage: View {
             await loadImage()
         }
     }
-
+    
     private func loadImage() async {
         guard let url else { return }
- 
+        
         if let cached = ImageCache.shared.image(for: url) {
             image = cached
             return
@@ -33,7 +33,7 @@ struct CachedAsyncImage: View {
             ImageCache.shared.insert(image: downloaded, for: url)
             image = downloaded
         } catch {
-            
+            print("İndirme başarısız oldu")
         }
     }
 }

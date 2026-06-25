@@ -23,18 +23,12 @@ struct MovieListView: View {
                 ScrollView {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(viewModel.movies) { movie in
-                            VStack(alignment: .leading, spacing: 6) {
-                                AsyncImage(url: movie.posterURL) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(2/3, contentMode: .fill)
-                                } placeholder: {
-                                    Color.gray.opacity(0.3)
-                                        .aspectRatio(2/3, contentMode: .fit)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .clipped()
-                                .cornerRadius(8)
+                            VStack(alignment: .leading, spacing: 6) { 
+                                CachedAsyncImage(url: movie.posterURL)
+                                    .aspectRatio(2/3, contentMode: .fill)
+                                    .frame(maxWidth: .infinity)
+                                    .clipped()
+                                    .cornerRadius(8)
                                 
                                 Text(movie.title)
                                     .font(.caption)
@@ -52,9 +46,9 @@ struct MovieListView: View {
                     }
                     .padding()
                     if viewModel.isLoadingMore {
-                                ProgressView()
-                                    .padding()
-                            }
+                        ProgressView()
+                            .padding()
+                    }
                 }
                 .task {
                     await viewModel.loadMovies()
