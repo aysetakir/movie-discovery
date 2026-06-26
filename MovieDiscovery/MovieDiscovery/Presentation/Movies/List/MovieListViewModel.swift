@@ -10,7 +10,16 @@ final class MovieListViewModel {
     private(set) var isLoading = false
     private(set) var isLoadingMore = false
     
+    var searchText = ""
+    private(set) var searchResults: [Movie] = []
+    private(set) var isSearching = false
+    
+    private var searchTask: Task<Void, Never>?
+    
     private let repository: MovieRepository
+    var displayedMovies: [Movie] {
+        searchText.trimmingCharacters(in: .whitespaces).isEmpty ? movies : searchResults
+    }
     
     init(repository: MovieRepository) {
         self.repository = repository
@@ -55,5 +64,32 @@ final class MovieListViewModel {
         }
         let threshold = movies.count - 5
         return index >= threshold
+    }
+    
+    func searchTextChanged() {
+        searchTask?.cancel()
+        
+        let query = searchText.trimmingCharacters(in: .whitespaces)
+        
+        guard !query.isEmpty else {
+            searchResults = []
+            isSearching = false
+            return
+        }
+        
+        searchTask = Task {
+            do {
+                try await Task.sleep(for:.milliseconds(500))
+                isSearching = true
+                let page = try await repository.searchMovies(query: query, page: 1)
+                
+                guard !Task.isCancelled else { return }
+                searchResults = page.movies
+                isSearching = false
+            } catch {
+                isSearching = false
+            }
+        }
+        
     }
 }

@@ -6,4 +6,11 @@ final class MovieRepositoryImpl: MovieRepository {
         let dto: MoviePageDTO = try await APIClient.shared.request(endpoint: endpoint)
         return dto.toDomain()
     }
+    
+    func searchMovies(query: String, page: Int) async throws -> MoviePage {
+        let endpoint = Endpoint.searchMovies(query: query, page: page)
+        let dto: MoviePageDTO = try await APIClient.shared.request(endpoint: endpoint)
+        return dto.toDomain()
+    }
+    
 }
