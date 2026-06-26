@@ -13,4 +13,9 @@ final class MovieRepositoryImpl: MovieRepository {
         return dto.toDomain()
     }
     
+    func fetchMovieDetail(id: Int) async throws -> MovieDetail {
+        let endpoint = Endpoint.movieDetail(id: id)
+        let dto: MovieDetailDTO = try await APIClient.shared.request(endpoint: endpoint)
+        return dto.toDomain()
+    }
 }

@@ -29,17 +29,40 @@ extension Endpoint {
         Endpoint(
             path: "/movie/popular",
             method: .get,
-            queryItems: [URLQueryItem(name: "page", value: "\(page)")]
+            queryItems:
+                [URLQueryItem(
+                    name: "page",
+                    value: "\(page)"
+                )]
         )
     }
 }
 
 extension Endpoint {
     static func searchMovies(query: String, page: Int) -> Endpoint {
-        Endpoint(path: "/search/movie", method: .get, queryItems: [
-            URLQueryItem(name: "query", value: query),
-            URLQueryItem(name: "page", value: "\(page)")
-        ]
+        Endpoint(
+            path: "/search/movie",
+            method: .get,
+            queryItems: [
+                URLQueryItem(
+                    name: "query",
+                    value: query
+                ),
+                URLQueryItem(
+                    name: "page",
+                    value: "\(page)"
+                )
+            ]
+        )
+    }
+}
+
+extension Endpoint {
+    static func movieDetail(id: Int) -> Endpoint {
+        Endpoint(
+            path: "/movie/\(id)",
+            method: .get,
+            queryItems: []
         )
     }
 }

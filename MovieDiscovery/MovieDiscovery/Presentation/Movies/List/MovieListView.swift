@@ -1,13 +1,17 @@
 import SwiftUI
 
 struct MovieListView: View {
-    @State private var viewModel = MovieListViewModel(repository: MovieRepositoryImpl())
-    
+    @State private var viewModel: MovieListViewModel
+
+    init(viewModel: MovieListViewModel) {
+        _viewModel = State(initialValue: viewModel)
+    }
+
     private let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
-    
+
     var body: some View {
         NavigationStack {
             Group {
@@ -19,25 +23,27 @@ struct MovieListView: View {
                             await viewModel.loadMovies()
                         }
                     }
-                }
-                else {
+                } else {
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 16) {
                             ForEach(viewModel.displayedMovies) { movie in
-                                VStack(alignment: .leading, spacing: 6) {
-                                    CachedAsyncImage(url: movie.posterURL)
-                                        .aspectRatio(2/3, contentMode: .fill)
-                                        .frame(maxWidth: .infinity)
-                                        .clipped()
-                                        .cornerRadius(8)
-                                    
-                                    Text(movie.title)
-                                        .font(.caption)
-                                        .lineLimit(2)
-                                    Text(String(format: "★ %.1f", movie.voteAverage))
-                                        .font(.caption2)
-                                        .foregroundStyle(.secondary)
+                                NavigationLink(value: movie.id) {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        CachedAsyncImage(url: movie.posterURL)
+                                            .aspectRatio(2/3, contentMode: .fill)
+                                            .frame(maxWidth: .infinity)
+                                            .clipped()
+                                            .cornerRadius(8)
+
+                                        Text(movie.title)
+                                            .font(.caption)
+                                            .lineLimit(2)
+                                        Text(String(format: "★ %.1f", movie.voteAverage))
+                                            .font(.caption2)
+                                            .foregroundStyle(.secondary)
+                                    }
                                 }
+                                .buttonStyle(.plain)
                                 .onAppear {
                                     Task {
                                         await viewModel.loadMoreIfNeeded(currentItem: movie)
@@ -46,6 +52,7 @@ struct MovieListView: View {
                             }
                         }
                         .padding()
+
                         if viewModel.isLoadingMore {
                             ProgressView()
                                 .padding()
@@ -55,17 +62,25 @@ struct MovieListView: View {
                     .onChange(of: viewModel.searchText) {
                         viewModel.searchTextChanged()
                     }
-                    .task {
-                        await viewModel.loadMovies()
-                    }
+
                 }
+            }
+            .navigationTitle("Filmler")
+            .navigationDestination(for: Int.self) { movieId in
+                MovieDetailView(
+                    viewModel: MovieDetailViewModel(
+                        movieId: movieId,
+                        repository: MovieRepositoryImpl()
+                    )
+                )
+            }
+            .task {
+                await viewModel.loadMovies()
             }
         }
     }
-    
 }
 
-
 #Preview {
-    MovieListView()
+    MovieListView(viewModel: MovieListViewModel(repository: MovieRepositoryImpl()))
 }
