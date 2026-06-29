@@ -81,6 +81,6 @@ struct MovieListView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     MovieListView(viewModel: MovieListViewModel(repository: MovieRepositoryImpl()))
-}
+}*/

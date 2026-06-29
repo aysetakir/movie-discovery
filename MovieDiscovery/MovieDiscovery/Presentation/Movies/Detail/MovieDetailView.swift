@@ -75,7 +75,7 @@ struct MovieDetailView: View {
     }
 }
 
-#Preview {
+/*#Preview {
     NavigationStack {
         MovieDetailView(
             viewModel: MovieDetailViewModel(
@@ -84,4 +84,4 @@ struct MovieDetailView: View {
             )
         )
     }
-}
+}*/
