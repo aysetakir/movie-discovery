@@ -9,7 +9,7 @@ final class MovieLocalDataSource {
         self.context = context
     }
     
-    func fetchMovie() throws -> [Movie] {
+    func fetchMovies() throws -> [Movie] {
         let descriptor = FetchDescriptor<MovieEntity>(
             sortBy: [SortDescriptor(\.voteAverage, order: .reverse)]
         )
