@@ -2,6 +2,16 @@
 
 A SwiftUI movie discovery app on the TMDB API, focused on **iOS data-layer performance**: pagination, image caching, debounced search, task cancellation, and offline-first persistence. Every performance decision is intentional, with the naive alternative documented alongside the chosen approach.
 
+## Screenshots
+
+<table>
+  <tr>
+    <td align="center"><img src="Screenshots/list.png" width="200"><br><sub><b>Movies</b></sub></td>
+    <td align="center"><img src="Screenshots/detail.png" width="200"><br><sub><b>Detail</b></sub></td>
+    <td align="center"><img src="Screenshots/search.png" width="200"><br><sub><b>Search</b></sub></td>
+  </tr>
+</table>
+
 ## Tech Stack
 
 - **SwiftUI** (iOS 17+), `@Observable`

@@ -70,3 +70,6 @@ build/
 
 # Secrets
 Secrets.xcconfig
+
+# Local tooling
+.claude/
